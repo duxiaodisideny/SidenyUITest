@@ -2,10 +2,11 @@ import os
 from Utils.File_reader import YamlReader
 
 BASE_PATH = os.path.split(os.path.dirname(os.path.abspath(__file__)))[0]
-CONFIG_FILE = os.path.join(BASE_PATH,'Config','configdr.yml')
+CONFIG_FILE = os.path.join(BASE_PATH,'ConfigMethod','configdr.yml')
 DATA_PATH = os.path.join(BASE_PATH,'Data')
 DRIVER_PATH = os.path.join(BASE_PATH,'Drivers')
 LOG_PATH = os.path.join(BASE_PATH,'Log')
+print(LOG_PATH)
 REPORT_PATH = os.path.join(BASE_PATH,'Report')
 
 
