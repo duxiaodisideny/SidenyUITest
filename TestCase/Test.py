@@ -7,6 +7,7 @@ from Utils.Log import logger
 from Utils.File_reader import ExcelReader
 from Utils.HTMLTestRunner import HTMLTestRunner
 import os
+from Utils.Mail import Email
 
 class TestBaidu(unittest.TestCase):
 
@@ -81,9 +82,20 @@ class TestBaidu(unittest.TestCase):
 #     with open(report, 'wb') as f:
 #         runner = HTMLTestRunner(stream=f, verbosity=1, title='测试报告', description='测试执行情况')
 #         runner.run(TestBaidu('test_search_3'))
+
+
 testunit = unittest.TestSuite()
 testunit.addTest(TestBaidu("test_search_3"))
-fp = open('/Users/duxiaodi/PycharmProjects/SidenyUITest/Report/result.html', 'wb')
+report = '/Users/duxiaodi/PycharmProjects/SidenyUITest/Report/report.html'
+fp = open('/Users/duxiaodi/PycharmProjects/SidenyUITest/Report/report.html', 'wb')
 runner = HTMLTestRunner(stream=fp, title='测试报告', description='测试执行情况')
 runner.run(testunit)
 fp.close()
+e = Email(title='百度搜索测试报告',
+          message='This is report',
+          receiver='duyang.li@119xiehui.com',
+          server='smtp.exmail.qq.com',
+          sender='xiaodi.du@119xiehui.com',
+          password='sg2NpQHir3DPvaKj',
+          path=report)
+e.send()
