@@ -2,9 +2,11 @@ import time
 import unittest
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from ConfigMethod.config import ConfigMethod,DRIVER_PATH,DATA_PATH
+from ConfigMethod.config import ConfigMethod,DRIVER_PATH,DATA_PATH,REPORT_PATH
 from Utils.Log import logger
 from Utils.File_reader import ExcelReader
+from Utils.HTMLTestRunner import HTMLTestRunner
+import os
 
 class TestBaidu(unittest.TestCase):
 
@@ -46,12 +48,25 @@ class TestBaidu(unittest.TestCase):
     #     for link in links:
     #         logger.info(link.text)
 
-    def test_search_2(self):
+    # def test_search_2(self):
+    #     datas = ExcelReader(self.excel).data
+    #     for d in datas:
+    #         with self.subTest(data=d):
+    #             self.sub_setUp()
+    #             self.driver.find_element(*self.locator_lw).send_keys(d['luyumeng'])
+    #             self.driver.find_element(*self.locator_su).click()
+    #             time.sleep(2)
+    #             links = self.driver.find_elements(*self.locator_result)
+    #             for link in links:
+    #                 logger.info(link.text)
+    #             self.sub_tearDown()
+
+    def test_search_3(self):
         datas = ExcelReader(self.excel).data
         for d in datas:
             with self.subTest(data=d):
                 self.sub_setUp()
-                self.driver.find_element(*self.locator_lw).send_keys(d['dxd'])
+                self.driver.find_element(*self.locator_lw).send_keys(d['Tname'])
                 self.driver.find_element(*self.locator_su).click()
                 time.sleep(2)
                 links = self.driver.find_elements(*self.locator_result)
@@ -59,5 +74,16 @@ class TestBaidu(unittest.TestCase):
                     logger.info(link.text)
                 self.sub_tearDown()
 
-if __name__ == '__main__':
-    unittest.main(verbosity=2)
+
+# if __name__ == '__main__':
+#     # unittest.main(verbosity=2)
+#     report = './report.html'
+#     with open(report, 'wb') as f:
+#         runner = HTMLTestRunner(stream=f, verbosity=1, title='测试报告', description='测试执行情况')
+#         runner.run(TestBaidu('test_search_3'))
+testunit = unittest.TestSuite()
+testunit.addTest(TestBaidu("test_search_3"))
+fp = open('/Users/duxiaodi/PycharmProjects/SidenyUITest/Report/result.html', 'wb')
+runner = HTMLTestRunner(stream=fp, title='测试报告', description='测试执行情况')
+runner.run(testunit)
+fp.close()

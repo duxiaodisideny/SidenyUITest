@@ -6,8 +6,8 @@ CONFIG_FILE = os.path.join(BASE_PATH,'ConfigMethod','configdr.yml')
 DATA_PATH = os.path.join(BASE_PATH,'Data')
 DRIVER_PATH = os.path.join(BASE_PATH,'Drivers')
 LOG_PATH = os.path.join(BASE_PATH,'Log')
-print(LOG_PATH)
 REPORT_PATH = os.path.join(BASE_PATH,'Report')
+print(REPORT_PATH)
 
 
 
