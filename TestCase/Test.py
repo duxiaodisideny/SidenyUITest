@@ -1,12 +1,11 @@
 import time
 import unittest
-from selenium import webdriver
 from selenium.webdriver.common.by import By
 from ConfigMethod.config import ConfigMethod,DRIVER_PATH,DATA_PATH,REPORT_PATH
 from Utils.Log import logger
 from Utils.File_reader import ExcelReader
 from Utils.HTMLTestRunner import HTMLTestRunner
-import os
+from TestCase.Page.Baidu_result_page import BaiduMainPage,BaiDuResultPage
 from Utils.Mail import Email
 
 class TestBaidu(unittest.TestCase):
@@ -27,11 +26,13 @@ class TestBaidu(unittest.TestCase):
 
 
     def sub_setUp(self):
-        self.driver = webdriver.Chrome(executable_path=DRIVER_PATH + '/chromedriver')
-        self.driver.get(self.URL)
+        # self.driver = webdriver.Chrome(executable_path=DRIVER_PATH + '/chromedriver')
+        # self.driver.get(self.URL)
+        self.page = BaiduMainPage(browser_type='chrome').get(self.URL)
 
     def sub_tearDown(self):
-        self.driver.quit()
+        # self.driver.quit()
+        self.page.quit()
 
     # def test_search_0(self):
     #     self.driver.find_element(*self.locator_lw).send_keys('I Love you')
@@ -62,17 +63,31 @@ class TestBaidu(unittest.TestCase):
     #                 logger.info(link.text)
     #             self.sub_tearDown()
 
-    def test_search_3(self):
+    # def test_search_3(self):
+    #     datas = ExcelReader(self.excel).data
+    #     for d in datas:
+    #         with self.subTest(data=d):
+    #             self.sub_setUp()
+    #             self.driver.find_element(*self.locator_lw).send_keys(d['Tname'])
+    #             self.driver.find_element(*self.locator_su).click()
+    #             time.sleep(2)
+    #             links = self.driver.find_elements(*self.locator_result)
+    #             for link in links:
+    #                 logger.info(link.text)
+    #             self.sub_tearDown()
+
+    def test_search_4(self):
         datas = ExcelReader(self.excel).data
         for d in datas:
-            with self.subTest(data=d):
+            with self.subTest(data =d):
                 self.sub_setUp()
-                self.driver.find_element(*self.locator_lw).send_keys(d['Tname'])
-                self.driver.find_element(*self.locator_su).click()
+                self.page.search(d['Tname'])
                 time.sleep(2)
-                links = self.driver.find_elements(*self.locator_result)
+                self.page = BaiDuResultPage(self.page)
+                links = self.page.result_links
                 for link in links:
                     logger.info(link.text)
+                self.save
                 self.sub_tearDown()
 
 
@@ -85,15 +100,15 @@ class TestBaidu(unittest.TestCase):
 
 
 testunit = unittest.TestSuite()
-testunit.addTest(TestBaidu("test_search_3"))
+testunit.addTest(TestBaidu("test_search_4"))
 report = '/Users/duxiaodi/PycharmProjects/SidenyUITest/Report/report.html'
 fp = open('/Users/duxiaodi/PycharmProjects/SidenyUITest/Report/report.html', 'wb')
 runner = HTMLTestRunner(stream=fp, title='测试报告', description='测试执行情况')
 runner.run(testunit)
 fp.close()
-e = Email(title='百度搜索测试报告',
-          message='This is report',
-          receiver='duyang.li@119xiehui.com',
+e = Email(title='测试报告',
+          message='This is report.Please check.',
+          receiver='haosen.chen@119xiehui.com',
           server='smtp.exmail.qq.com',
           sender='xiaodi.du@119xiehui.com',
           password='sg2NpQHir3DPvaKj',
