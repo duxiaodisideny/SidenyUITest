@@ -1,3 +1,6 @@
+"""
+    接口测试，判断传入的http 请求是否符合要求
+"""
 import requests
 from Utils.Log import logger
 

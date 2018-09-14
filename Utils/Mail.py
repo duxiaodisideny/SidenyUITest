@@ -1,3 +1,6 @@
+"""
+    发送邮件
+"""
 import re
 import smtplib
 from email.mime.multipart import MIMEMultipart

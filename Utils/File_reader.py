@@ -1,3 +1,6 @@
+"""
+    读取文件操作，目前已经完成读取Yaml布局文件与Excel文件
+"""
 import yaml
 import os
 from xlrd import open_workbook

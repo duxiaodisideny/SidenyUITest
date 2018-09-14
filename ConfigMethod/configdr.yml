@@ -8,3 +8,4 @@ log:
      pattern: '%(asctime)s-%(name)s-%(levelname)s-%(message)s'
 
 TITLE: '测试报告'
+

@@ -7,6 +7,7 @@ from Utils.File_reader import ExcelReader
 from Utils.HTMLTestRunner import HTMLTestRunner
 from TestCase.Page.Baidu_result_page import BaiduMainPage,BaiDuResultPage
 from Utils.Mail import Email
+from Utils.Assertion import assertHTTPCode
 
 class TestBaidu(unittest.TestCase):
 
@@ -76,19 +77,25 @@ class TestBaidu(unittest.TestCase):
     #                 logger.info(link.text)
     #             self.sub_tearDown()
 
-    def test_search_4(self):
-        datas = ExcelReader(self.excel).data
-        for d in datas:
-            with self.subTest(data =d):
-                self.sub_setUp()
-                self.page.search(d['Tname'])
-                time.sleep(2)
-                self.page = BaiDuResultPage(self.page)
-                links = self.page.result_links
-                for link in links:
-                    logger.info(link.text)
-                self.save
-                self.sub_tearDown()
+    # def test_search_4(self):
+    #     datas = ExcelReader(self.excel).data
+    #     for d in datas:
+    #         with self.subTest(data =d):
+    #             self.sub_setUp()
+    #             self.page.search(d['Tname'])
+    #             time.sleep(2)
+    #             self.page = BaiDuResultPage(self.page)
+    #             links = self.page.result_links
+    #             for link in links:
+    #                 logger.info(link.text)
+    #             self.save
+    #             self.sub_tearDown()
+
+    def test_baidu_http(self):
+        res = self.client.send()
+        logger.debug(res.text)
+        assertHTTPCode(res, [400])
+        self.assertIn('百度一下，你就知道', res.text)
 
 
 # if __name__ == '__main__':
@@ -100,17 +107,19 @@ class TestBaidu(unittest.TestCase):
 
 
 testunit = unittest.TestSuite()
-testunit.addTest(TestBaidu("test_search_4"))
+testunit.addTest(TestBaidu("test_baidu_http"))
 report = '/Users/duxiaodi/PycharmProjects/SidenyUITest/Report/report.html'
 fp = open('/Users/duxiaodi/PycharmProjects/SidenyUITest/Report/report.html', 'wb')
 runner = HTMLTestRunner(stream=fp, title='测试报告', description='测试执行情况')
 runner.run(testunit)
 fp.close()
-e = Email(title='测试报告',
-          message='This is report.Please check.',
-          receiver='haosen.chen@119xiehui.com',
-          server='smtp.exmail.qq.com',
-          sender='xiaodi.du@119xiehui.com',
-          password='sg2NpQHir3DPvaKj',
-          path=report)
-e.send()
+
+# 发送邮件
+# e = Email(title='测试报告',
+#           message='This is report.Please check.',
+#           receiver='haosen.chen@119xiehui.com',
+#           server='smtp.exmail.qq.com',
+#           sender='xiaodi.du@119xiehui.com',
+#           password='sg2NpQHir3DPvaKj',
+#           path=report)
+# e.send()

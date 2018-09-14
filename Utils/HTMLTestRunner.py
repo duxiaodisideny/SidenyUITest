@@ -1,4 +1,7 @@
 """
+    本模块从网上下载，经过自我调适，已经可以适配python3.7
+"""
+"""
 A TestRunner for use with the Python unit testing framework. It
 generates a HTML report to show the result at a glance.
 
